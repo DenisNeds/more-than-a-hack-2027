@@ -1,0 +1,5 @@
+*.ipynb filter=nbstripout
+*.zpln filter=nbstripout
+*.ipynb diff=ipynb
+# organiser notebooks: leave byte-identical to upstream
+starter/*.ipynb -filter

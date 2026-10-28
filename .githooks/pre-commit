@@ -1,0 +1,21 @@
+#!/bin/sh
+# Refuse to commit anything that would put the gated match data, a ground truth or a full-match
+# submission into this public repository. .gitignore already covers these; this catches `git add -f`.
+# Bypass (only if you are sure): git commit --no-verify
+
+fail=0
+for f in $(git diff --cached --name-only --diff-filter=ACMR); do
+  case "$f" in
+    data/README.md) ;;
+    data/*|*.mp4|*_atd.txt|*_atd.xml|*_homography.csv|*_smart_tagging.xml|*_possession_gt.csv|*_possession_gt_meta.json)
+      echo "pre-commit: blocked $f (match data / private ground truth)"; fail=1 ;;
+    evaluation/results/baseline_*.csv) ;;
+    evaluation/results/*.csv)
+      echo "pre-commit: blocked $f (submissions stay out of git)"; fail=1 ;;
+  esac
+  size=$(git cat-file -s ":$f" 2>/dev/null || echo 0)
+  if [ "$size" -gt 5000000 ]; then
+    echo "pre-commit: blocked $f ($size bytes > 5 MB -- is this data?)"; fail=1
+  fi
+done
+exit $fail
