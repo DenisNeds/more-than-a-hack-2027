@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./data/**)",
+      "Read(**/*.mp4)",
+      "Read(**/*_atd.txt)",
+      "Read(**/*_atd.xml)",
+      "Read(**/*_homography.csv)",
+      "Read(**/*_smart_tagging.xml)",
+      "Bash(cat data/*)",
+      "Bash(head data/*)",
+      "Bash(tail data/*)",
+      "Bash(less data/*)"
+    ]
+  }
+}
